@@ -1,53 +1,11 @@
 import React from "react";
 import styled from "styled-components/macro";
 
+import { Project } from "./Project";
+
 import { projects } from "../data";
 import { useUrlSearchParams } from "../hooks";
-import { formatDate } from "../utils";
-
-function ProjectListItem({
-  name,
-  template,
-  target,
-  createdByUser,
-  createdDate,
-}) {
-  return (
-    <div
-      style={{
-        padding: 4,
-        display: "flex",
-        flexDirection: "column",
-        textAlign: "left",
-        border: "1px solid #ccc",
-        marginTop: 16,
-      }}
-    >
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-        }}
-      >
-        <p>{name}</p>
-        <p>{template}</p>
-      </div>
-
-      <p>Target: {target}</p>
-
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "flex-end",
-        }}
-      >
-        <p>
-          CREATED: {createdByUser} &bull; {formatDate(createdDate)}
-        </p>
-      </div>
-    </div>
-  );
-}
+import { filter } from "../utils";
 
 export default function Projects() {
   const { value, set } = useUrlSearchParams();
@@ -59,7 +17,7 @@ export default function Projects() {
       return projects;
     }
 
-    return projects.filter((project) =>
+    return filter(projects, (project) =>
       project.name.toLowerCase().includes(projectSearchKeyword.toLowerCase())
     );
   }, [projectSearchKeyword]);
@@ -82,7 +40,7 @@ export default function Projects() {
         {filteredProjects.length > 0 &&
           filteredProjects.map(
             ({ createdByUser, createdDate, id, name, target, template }) => (
-              <ProjectListItem
+              <Project
                 key={id}
                 createdByUser={createdByUser}
                 createdDate={createdDate}

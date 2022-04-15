@@ -1,6 +1,7 @@
 /// <reference types="cypress" />
 
 import { projects } from "../../src/data";
+import { filter } from "../../src/utils";
 
 describe("Project list app", () => {
   beforeEach(() => {
@@ -16,7 +17,7 @@ describe("Project list app", () => {
     const projectSearchKeyword = "il";
     cy.findByLabelText(/project search/i).type(projectSearchKeyword);
 
-    const filteredProjects = projects.filter((project) =>
+    const filteredProjects = filter(projects, (project) =>
       project.name.toLowerCase().includes(projectSearchKeyword.toLowerCase())
     );
 
