@@ -3,11 +3,7 @@ import React from "react";
 export default function AppTagsInput() {
   const [value, setValue] = React.useState([]);
 
-  return (
-    <div>
-      <TagsInput value={value} onChange={setValue} />
-    </div>
-  );
+  return <TagsInput value={value} onChange={setValue} />;
 }
 
 export function TagsInput({ value = [], onChange }) {
