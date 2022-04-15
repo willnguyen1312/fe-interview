@@ -30,4 +30,4 @@ jobs:
         run: yarn run build
 
       - name: E2E test
-        run: yarn run e2e:headless:ci
+        run: yarn run test:e2e:ci
