@@ -79,4 +79,29 @@ describe("TagsInput component", () => {
       expect(screen.getByText(tag)).toBeInTheDocument();
     }
   });
+
+  it("should handle keyboard usage properly", async () => {
+    const initialTags = ["first", "second"];
+    renderTagsInput({ initialTags });
+
+    const firstTag = screen.getByText(initialTags[0]);
+    const firstTagDeleteButton = within(firstTag).getByLabelText(/delete tag/i);
+
+    const secondTag = screen.getByText(initialTags[1]);
+    const secondTabDeleteButton =
+      within(secondTag).getByLabelText(/delete tag/i);
+
+    firstTagDeleteButton.focus();
+
+    userEvent.tab();
+
+    // Hit Tab to move to second tag
+    expect(secondTabDeleteButton).toHaveFocus();
+    // Hit Enter
+    fireEvent.keyDown(secondTabDeleteButton, { keyCode: 13 });
+    // Should delete second tab
+    expect(screen.queryByText(initialTags[1])).not.toBeInTheDocument();
+    // Should remain first tag
+    expect(screen.getByText(initialTags[0])).toBeInTheDocument();
+  });
 });

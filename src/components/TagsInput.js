@@ -74,6 +74,8 @@ export function TagsInput({ value = [], onChange }) {
       style={{
         padding: 12,
         border: "1px solid violet",
+        borderRadius: 4,
+        cursor: "text",
       }}
     >
       {value.map((tag) => {
@@ -82,8 +84,8 @@ export function TagsInput({ value = [], onChange }) {
             style={{
               padding: "4px 8px",
               marginRight: 8,
-              border: "1px solid green",
-              position: "relative",
+              border: "1px solid blue",
+              borderRadius: 2,
             }}
             key={tag}
           >
@@ -110,6 +112,7 @@ export function TagsInput({ value = [], onChange }) {
         style={{
           width: 100,
           border: 0,
+          outline: "none",
         }}
         value={inputValue}
         onKeyDown={handleOnKeyDown}
