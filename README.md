@@ -1,3 +1,5 @@
+[![validate](https://github.com/willnguyen1312/fe-interview/actions/workflows/validate.yml/badge.svg?branch=main)](https://github.com/willnguyen1312/fe-interview/actions/workflows/validate.yml)
+
 # Take home assignment
 
 - [x] Create `Project` component based on the `Project card.png` sketch

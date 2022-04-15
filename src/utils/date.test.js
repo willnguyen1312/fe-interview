@@ -2,9 +2,9 @@ import { formatDate } from "./date";
 
 describe("formatDate function", () => {
   it("should convert date string to the right format", () => {
-    const input = "2020-08-26T20:59:39.475347Z";
-    const actual = formatDate(input);
-    const expected = "Aug 27, 2020";
+    const input = new Date(Date.UTC(2022, 3, 15));
+    const actual = formatDate(input.toISOString());
+    const expected = "Apr 15, 2022";
 
     expect(actual).toBe(expected);
   });
