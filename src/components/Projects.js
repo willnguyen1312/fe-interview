@@ -60,7 +60,7 @@ export default function Projects() {
     }
 
     return projects.filter((project) =>
-      project.name.includes(projectSearchKeyword)
+      project.name.toLowerCase().includes(projectSearchKeyword.toLowerCase())
     );
   }, [projectSearchKeyword]);
 

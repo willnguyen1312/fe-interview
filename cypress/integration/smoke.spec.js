@@ -17,7 +17,7 @@ describe("Project list app", () => {
     cy.findByLabelText(/project search/i).type(projectSearchKeyword);
 
     const filteredProjects = projects.filter((project) =>
-      project.name.includes(projectSearchKeyword)
+      project.name.toLowerCase().includes(projectSearchKeyword.toLowerCase())
     );
 
     // Should display a list of filtered project
