@@ -88,7 +88,7 @@ describe("TagsInput component", () => {
     const firstTagDeleteButton = within(firstTag).getByLabelText(/delete tag/i);
 
     const secondTag = screen.getByText(initialTags[1]);
-    const secondTabDeleteButton =
+    const secondTagDeleteButton =
       within(secondTag).getByLabelText(/delete tag/i);
 
     firstTagDeleteButton.focus();
@@ -96,10 +96,10 @@ describe("TagsInput component", () => {
     userEvent.tab();
 
     // Hit Tab to move to second tag
-    expect(secondTabDeleteButton).toHaveFocus();
+    expect(secondTagDeleteButton).toHaveFocus();
     // Hit Enter
-    fireEvent.keyDown(secondTabDeleteButton, { keyCode: 13 });
-    // Should delete second tab
+    fireEvent.keyDown(secondTagDeleteButton, { keyCode: 13 });
+    // Should delete second tag
     expect(screen.queryByText(initialTags[1])).not.toBeInTheDocument();
     // Should remain first tag
     expect(screen.getByText(initialTags[0])).toBeInTheDocument();
