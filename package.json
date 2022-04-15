@@ -1,0 +1,43 @@
+{
+  "name": "test-assignment",
+  "version": "1.0.0",
+  "description": "",
+  "keywords": [],
+  "main": "src/index.js",
+  "dependencies": {
+    "@testing-library/cypress": "^8.0.2",
+    "@testing-library/jest-dom": "^5.16.4",
+    "@testing-library/react": "^13.0.1",
+    "@testing-library/user-event": "^14.1.0",
+    "react": "18.0.0",
+    "react-dom": "18.0.0",
+    "react-scripts": "^5.0.1",
+    "start-server-and-test": "^1.14.0",
+    "styled-components": "5.3.5"
+  },
+  "devDependencies": {
+    "@babel/runtime": "7.17.9",
+    "cross-env": "^7.0.3",
+    "cypress": "^9.5.4",
+    "serve": "^13.0.2",
+    "typescript": "^4.6.3"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "start:cli": "cross-env BROWSER=none react-scripts start",
+    "build": "react-scripts build",
+    "cy:run": "cypress run",
+    "cy:open": "cypress open",
+    "test:unit": "react-scripts test",
+    "test:unit:ci": "cross-env CI=true react-scripts test",
+    "test:e2e": "start-server-and-test start:cli http://localhost:3000 cy:open",
+    "test:e2e:ci": "start-server-and-test serve http://localhost:3000 cy:run",
+    "serve": "serve --listen 3000 build"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
+}
