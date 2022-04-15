@@ -18,9 +18,7 @@ export function useUrlSearchParams() {
     setSearchParams({ ...searchParams, [key]: value });
   }
 
-  const handleUrlChange = React.useCallback(() => {
-    setSearchParams(constructSearchParamsLookup);
-  }, []);
+  const handleUrlChange = () => setSearchParams(constructSearchParamsLookup);
 
   React.useEffect(() => {
     const newParams = new URLSearchParams("");
