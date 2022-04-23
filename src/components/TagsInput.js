@@ -6,30 +6,28 @@ export default function AppTagsInput() {
   return <TagsInput value={value} onChange={setValue} />;
 }
 
-export function TagsInput({ value = [], onChange }) {
+export function TagsInput({ value = [], onChange = () => {} }) {
   const [inputValue, setInputValue] = React.useState("");
   const wrapperRef = React.useRef(null);
   const inputRef = React.useRef(null);
 
   function handleOnKeyDown(event) {
-    const { keyCode } = event;
-    const isEnter = keyCode === 13;
+    const { key } = event;
+    const isEnter = key === "Enter";
+    const finalValue = inputValue.trim();
 
-    if (isEnter && inputValue) {
+    if (isEnter && finalValue) {
       const newTags = [...new Set(value.concat(inputValue))];
-
-      onChange && onChange(newTags);
-
+      onChange(newTags);
       setInputValue("");
+
       return;
     }
 
-    const isDelete = keyCode === 8;
-
-    if (isDelete && !inputValue && value.length) {
-      const newTags = value.slice(0, value.length - 1);
-      onChange && onChange(newTags);
-      return;
+    const isDelete = key === "Backspace";
+    if (isDelete && !finalValue && value.length > 0) {
+      const newTags = value.slice(0, -1);
+      onChange(newTags);
     }
   }
 
@@ -45,18 +43,16 @@ export function TagsInput({ value = [], onChange }) {
 
   function removeTag(tag) {
     const newTags = value.filter((t) => t !== tag);
-    onChange && onChange(newTags);
+    onChange(newTags);
   }
 
   function makeOnDeleteTagHandler(tag) {
-    return () => {
-      removeTag(tag);
-    };
+    return () => removeTag(tag);
   }
 
   function makeTagONKeyDownHandler(tag) {
     return (event) => {
-      const isEnter = event.keyCode === 13;
+      const isEnter = event.key === "Enter";
       if (isEnter) {
         removeTag(tag);
       }
@@ -72,6 +68,8 @@ export function TagsInput({ value = [], onChange }) {
         border: "1px solid violet",
         borderRadius: 4,
         cursor: "text",
+        display: "flex",
+        flexWrap: "wrap",
       }}
     >
       {value.map((tag) => {
@@ -79,9 +77,13 @@ export function TagsInput({ value = [], onChange }) {
           <span
             style={{
               padding: "4px 8px",
+              margin: "2px",
               marginRight: 8,
               border: "1px solid blue",
               borderRadius: 2,
+              maxWidth: "100%",
+              textOverflow: "ellipsis",
+              overflow: "hidden",
             }}
             key={tag}
           >
