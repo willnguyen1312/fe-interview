@@ -22,7 +22,7 @@ describe("TagsInput component", () => {
     const input = screen.getByTestId("tags-input-testid");
     await userEvent.type(input, newTag);
     // Hit Enter
-    fireEvent.keyDown(input, { keyCode: 13 });
+    fireEvent.keyDown(input, { key: "Enter" });
 
     expect(input.value).toBe("");
     expect(screen.getByText(newTag)).toBeInTheDocument();
@@ -30,7 +30,7 @@ describe("TagsInput component", () => {
     // Should prevent duplicated tag
     await userEvent.type(input, newTag);
     // Hit Enter
-    fireEvent.keyDown(input, { keyCode: 13 });
+    fireEvent.keyDown(input, { key: "Enter" });
     expect(input.value).toBe("");
     expect(screen.queryAllByText(newTag)).toHaveLength(1);
 
@@ -38,7 +38,7 @@ describe("TagsInput component", () => {
     const latestTag = "def";
     await userEvent.type(input, latestTag);
     // Hit Enter
-    fireEvent.keyDown(input, { keyCode: 13 });
+    fireEvent.keyDown(input, { key: "Enter" });
     expect(input.value).toBe("");
     expect(screen.getByText(latestTag)).toBeInTheDocument();
   });
@@ -53,13 +53,13 @@ describe("TagsInput component", () => {
 
     const input = screen.getByTestId("tags-input-testid");
     // Hit Delete to clear right most tag
-    fireEvent.keyDown(input, { keyCode: 8 });
+    fireEvent.keyDown(input, { key: "Backspace" });
 
     expect(screen.queryByText(initialTags[1])).not.toBeInTheDocument();
     expect(screen.getByText(initialTags[0])).toBeInTheDocument();
 
     // Hit Delete agin to clear last tag
-    fireEvent.keyDown(input, { keyCode: 8 });
+    fireEvent.keyDown(input, { key: "Backspace" });
     expect(screen.queryByText(initialTags[0])).not.toBeInTheDocument();
   });
 
@@ -98,7 +98,7 @@ describe("TagsInput component", () => {
     // Hit Tab to move to second tag
     expect(secondTagDeleteButton).toHaveFocus();
     // Hit Enter
-    fireEvent.keyDown(secondTagDeleteButton, { keyCode: 13 });
+    fireEvent.keyDown(secondTagDeleteButton, { key: "Enter" });
     // Should delete second tag
     expect(screen.queryByText(initialTags[1])).not.toBeInTheDocument();
     // Should remain first tag
