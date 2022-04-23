@@ -68,6 +68,8 @@ export function TagsInput({ value = [], onChange = () => {} }) {
         border: "1px solid violet",
         borderRadius: 4,
         cursor: "text",
+        display: "flex",
+        flexWrap: "wrap",
       }}
     >
       {value.map((tag) => {
@@ -75,9 +77,13 @@ export function TagsInput({ value = [], onChange = () => {} }) {
           <span
             style={{
               padding: "4px 8px",
+              margin: "2px",
               marginRight: 8,
               border: "1px solid blue",
               borderRadius: 2,
+              maxWidth: "100%",
+              textOverflow: "ellipsis",
+              overflow: "hidden",
             }}
             key={tag}
           >
