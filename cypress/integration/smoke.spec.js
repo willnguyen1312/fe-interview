@@ -38,5 +38,16 @@ describe("Project list app", () => {
     for (const project of filteredProjects) {
       cy.findByText(project.name);
     }
+
+    const hiddenProjects = filter(
+      projects,
+      (project) =>
+        !project.name.toLowerCase().includes(projectSearchKeyword.toLowerCase())
+    );
+
+    // Should not display the rest of projects
+    for (const project of hiddenProjects) {
+      cy.findByText(project.name).should("not.exist");
+    }
   });
 });
