@@ -8,16 +8,11 @@ on:
       - "main"
 jobs:
   setup:
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-        node: [16]
-    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
         with:
-          node-version: ${{ matrix.node }}
+          node-version: "16"
           cache: "npm"
 
       - name: Install
