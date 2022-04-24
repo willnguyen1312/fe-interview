@@ -69,7 +69,9 @@ describe("TagsInput component", () => {
 
     // Remove first tag
     const firstTag = screen.getByText(initialTags[0]);
-    const firstTagDeleteButton = within(firstTag).getByLabelText(/delete tag/i);
+    const firstTagDeleteButton = within(firstTag).getByRole("button", {
+      name: /delete tag/i,
+    });
 
     await userEvent.click(firstTagDeleteButton);
     expect(screen.queryByText(initialTags[0])).not.toBeInTheDocument();
@@ -84,14 +86,15 @@ describe("TagsInput component", () => {
     const initialTags = ["first", "second"];
     renderTagsInput({ initialTags });
 
-    screen.logTestingPlaygroundURL();
-
     const firstTag = screen.getByText(initialTags[0]);
-    const firstTagDeleteButton = within(firstTag).getByLabelText(/delete tag/i);
+    const firstTagDeleteButton = within(firstTag).getByRole("button", {
+      name: /delete tag/i,
+    });
 
     const secondTag = screen.getByText(initialTags[1]);
-    const secondTagDeleteButton =
-      within(secondTag).getByLabelText(/delete tag/i);
+    const secondTagDeleteButton = within(secondTag).getByRole("button", {
+      name: /delete tag/i,
+    });
 
     firstTagDeleteButton.focus();
 
