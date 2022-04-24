@@ -19,7 +19,7 @@ describe("TagsInput component", () => {
 
     // Type new tag
     const newTag = "abc";
-    const input = screen.getByTestId("tags-input-testid");
+    const input = screen.getByRole("textbox");
     await userEvent.type(input, newTag);
     // Hit Enter
     fireEvent.keyDown(input, { key: "Enter" });
@@ -51,7 +51,7 @@ describe("TagsInput component", () => {
       expect(screen.getByText(tag)).toBeInTheDocument();
     }
 
-    const input = screen.getByTestId("tags-input-testid");
+    const input = screen.getByRole("textbox");
     // Hit Delete to clear right most tag
     fireEvent.keyDown(input, { key: "Backspace" });
 
@@ -69,7 +69,9 @@ describe("TagsInput component", () => {
 
     // Remove first tag
     const firstTag = screen.getByText(initialTags[0]);
-    const firstTagDeleteButton = within(firstTag).getByLabelText(/delete tag/i);
+    const firstTagDeleteButton = within(firstTag).getByRole("button", {
+      name: /delete tag/i,
+    });
 
     await userEvent.click(firstTagDeleteButton);
     expect(screen.queryByText(initialTags[0])).not.toBeInTheDocument();
@@ -85,11 +87,14 @@ describe("TagsInput component", () => {
     renderTagsInput({ initialTags });
 
     const firstTag = screen.getByText(initialTags[0]);
-    const firstTagDeleteButton = within(firstTag).getByLabelText(/delete tag/i);
+    const firstTagDeleteButton = within(firstTag).getByRole("button", {
+      name: /delete tag/i,
+    });
 
     const secondTag = screen.getByText(initialTags[1]);
-    const secondTagDeleteButton =
-      within(secondTag).getByLabelText(/delete tag/i);
+    const secondTagDeleteButton = within(secondTag).getByRole("button", {
+      name: /delete tag/i,
+    });
 
     firstTagDeleteButton.focus();
 

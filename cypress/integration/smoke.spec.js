@@ -15,7 +15,9 @@ describe("Project list app", () => {
     }
 
     const projectSearchKeyword = "il";
-    cy.findByLabelText(/project search/i).type(projectSearchKeyword);
+    cy.findByRole("textbox", { name: /project search/i }).type(
+      projectSearchKeyword
+    );
 
     const filteredProjects = filter(projects, (project) =>
       project.name.toLowerCase().includes(projectSearchKeyword.toLowerCase())
@@ -29,7 +31,7 @@ describe("Project list app", () => {
     cy.reload();
 
     // Should initialize search box with value from URL
-    cy.findByLabelText(/project search/i).should(
+    cy.findByRole("textbox", { name: /project search/i }).should(
       "have.value",
       projectSearchKeyword
     );
