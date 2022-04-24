@@ -19,7 +19,7 @@ describe("TagsInput component", () => {
 
     // Type new tag
     const newTag = "abc";
-    const input = screen.getByTestId("tags-input-testid");
+    const input = screen.getByRole("textbox");
     await userEvent.type(input, newTag);
     // Hit Enter
     fireEvent.keyDown(input, { key: "Enter" });
@@ -51,7 +51,7 @@ describe("TagsInput component", () => {
       expect(screen.getByText(tag)).toBeInTheDocument();
     }
 
-    const input = screen.getByTestId("tags-input-testid");
+    const input = screen.getByRole("textbox");
     // Hit Delete to clear right most tag
     fireEvent.keyDown(input, { key: "Backspace" });
 
@@ -83,6 +83,8 @@ describe("TagsInput component", () => {
   it("should handle keyboard usage properly", async () => {
     const initialTags = ["first", "second"];
     renderTagsInput({ initialTags });
+
+    screen.logTestingPlaygroundURL();
 
     const firstTag = screen.getByText(initialTags[0]);
     const firstTagDeleteButton = within(firstTag).getByLabelText(/delete tag/i);

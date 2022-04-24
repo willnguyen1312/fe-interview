@@ -115,7 +115,6 @@ export function TagsInput({ value = [], onChange = () => {} }) {
         value={inputValue}
         onKeyDown={handleOnKeyDown}
         onChange={handleOnChange}
-        data-testid="tags-input-testid"
       />
     </div>
   );
