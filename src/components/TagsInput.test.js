@@ -1,7 +1,7 @@
 import React from "react";
-import { screen, render, fireEvent, within } from "@testing-library/react";
+import { screen, render, within } from "@testing-library/react";
 import { TagsInput } from "./TagsInput";
-import userEvent, { specialChars } from "@testing-library/user-event";
+import userEvent from "@testing-library/user-event";
 
 function TestTagsInput({ initialTags = [] }) {
   const [value, setValue] = React.useState(initialTags);
@@ -10,62 +10,67 @@ function TestTagsInput({ initialTags = [] }) {
 }
 
 describe("TagsInput component", () => {
-  function renderTagsInput(props = {}) {
-    return render(<TestTagsInput {...props} />);
+  function setup(props = {}) {
+    return {
+      user: userEvent.setup(),
+      ...render(<TestTagsInput {...props} />),
+    };
   }
 
   it("should handle add new input by ENTER key properly", async () => {
-    renderTagsInput();
+    const { user } = setup();
 
     // Type new tag
     const newTag = "abc";
     const input = screen.getByRole("textbox");
-    await userEvent.type(input, newTag);
+    await user.type(input, newTag);
     // Hit Enter
-    fireEvent.keyDown(input, { key: "Enter" });
+    await user.keyboard("{Enter}");
 
     expect(input.value).toBe("");
     expect(screen.getByText(newTag)).toBeInTheDocument();
 
     // Should prevent duplicated tag
-    await userEvent.type(input, newTag);
+    await user.type(input, newTag);
     // Hit Enter
-    fireEvent.keyDown(input, { key: "Enter" });
+    await user.keyboard("{Enter}");
     expect(input.value).toBe("");
     expect(screen.queryAllByText(newTag)).toHaveLength(1);
 
     // Should add new tag when hit Enter
     const latestTag = "def";
-    await userEvent.type(input, latestTag);
+    await user.type(input, latestTag);
     // Hit Enter
-    fireEvent.keyDown(input, { key: "Enter" });
+    await user.keyboard("{Enter}");
     expect(input.value).toBe("");
     expect(screen.getByText(latestTag)).toBeInTheDocument();
   });
 
-  it("should handle remove tag by DELETE key properly", () => {
+  it("should handle remove tag by Backspace key properly", async () => {
     const initialTags = ["first", "second"];
-    renderTagsInput({ initialTags });
+    const { user, container } = setup({ initialTags });
 
     for (const tag of initialTags) {
       expect(screen.getByText(tag)).toBeInTheDocument();
     }
 
     const input = screen.getByRole("textbox");
-    // Hit Delete to clear right most tag
-    fireEvent.keyDown(input, { key: "Backspace" });
+    await user.click(input);
+    expect(input).toHaveFocus();
 
-    expect(screen.queryByText(initialTags[1])).not.toBeInTheDocument();
+    // // Hit Delete to clear right most tag
+    await user.keyboard("{Backspace}");
     expect(screen.getByText(initialTags[0])).toBeInTheDocument();
+    expect(screen.queryByText(initialTags[1])).not.toBeInTheDocument();
 
-    // Hit Delete agin to clear last tag
-    fireEvent.keyDown(input, { key: "Backspace" });
+    // // Hit Delete agin to clear last tag
+    await user.keyboard("{Backspace}");
     expect(screen.queryByText(initialTags[0])).not.toBeInTheDocument();
   });
 
   it("should handle remove tag by x button properly", async () => {
     const initialTags = ["first", "second", "third", "fourth"];
-    renderTagsInput({ initialTags });
+    const { user } = setup({ initialTags });
 
     // Remove first tag
     const firstTag = screen.getByText(initialTags[0]);
@@ -73,7 +78,7 @@ describe("TagsInput component", () => {
       name: /delete tag/i,
     });
 
-    await userEvent.click(firstTagDeleteButton);
+    await user.click(firstTagDeleteButton);
     expect(screen.queryByText(initialTags[0])).not.toBeInTheDocument();
 
     // Assure the rest of tags should remain intact
@@ -84,7 +89,7 @@ describe("TagsInput component", () => {
 
   it("should handle keyboard usage properly", async () => {
     const initialTags = ["first", "second"];
-    renderTagsInput({ initialTags });
+    const { user } = setup({ initialTags });
 
     const firstTag = screen.getByText(initialTags[0]);
     const firstTagDeleteButton = within(firstTag).getByRole("button", {
@@ -98,12 +103,12 @@ describe("TagsInput component", () => {
 
     firstTagDeleteButton.focus();
 
-    userEvent.tab();
+    await user.tab();
 
     // Hit Tab to move to second tag
     expect(secondTagDeleteButton).toHaveFocus();
     // Hit Enter
-    fireEvent.keyDown(secondTagDeleteButton, { key: "Enter" });
+    await user.keyboard("{Enter}");
     // Should delete second tag
     expect(screen.queryByText(initialTags[1])).not.toBeInTheDocument();
     // Should remain first tag
