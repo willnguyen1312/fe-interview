@@ -106,6 +106,7 @@ export function TagsInput({ value = [], onChange = () => {} }) {
         );
       })}
       <input
+        aria-label="Add new tag"
         ref={inputRef}
         style={{
           width: 100,
