@@ -1,7 +1,9 @@
 import React from "react";
 import { screen, render, within } from "@testing-library/react";
-import { TagsInput } from "./TagsInput";
 import userEvent from "@testing-library/user-event";
+
+import { TagsInput } from "./TagsInput";
+import { checkAccessibility } from "../testUtils";
 
 function TestTagsInput({ initialTags = [] }) {
   const [value, setValue] = React.useState(initialTags);
@@ -18,7 +20,8 @@ describe("TagsInput component", () => {
   }
 
   it("should handle add new input by ENTER key properly", async () => {
-    const { user } = setup();
+    const { user, container } = setup();
+    await checkAccessibility(container);
 
     // Type new tag
     const newTag = "abc";
@@ -49,6 +52,7 @@ describe("TagsInput component", () => {
   it("should handle remove tag by Backspace key properly", async () => {
     const initialTags = ["first", "second"];
     const { user, container } = setup({ initialTags });
+    await checkAccessibility(container);
 
     for (const tag of initialTags) {
       expect(screen.getByText(tag)).toBeInTheDocument();
@@ -70,7 +74,8 @@ describe("TagsInput component", () => {
 
   it("should handle remove tag by x button properly", async () => {
     const initialTags = ["first", "second", "third", "fourth"];
-    const { user } = setup({ initialTags });
+    const { user, container } = setup({ initialTags });
+    await checkAccessibility(container);
 
     // Remove first tag
     const firstTag = screen.getByText(initialTags[0]);
@@ -89,7 +94,8 @@ describe("TagsInput component", () => {
 
   it("should handle keyboard usage properly", async () => {
     const initialTags = ["first", "second"];
-    const { user } = setup({ initialTags });
+    const { user, container } = setup({ initialTags });
+    await checkAccessibility(container);
 
     const firstTag = screen.getByText(initialTags[0]);
     const firstTagDeleteButton = within(firstTag).getByRole("button", {
