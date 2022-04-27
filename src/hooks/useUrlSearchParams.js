@@ -42,7 +42,9 @@ export function useUrlSearchParams() {
     window.history.replaceState(
       {},
       "",
-      newQueryParams ? `/?${newQueryParams}` : "/"
+      newQueryParams
+        ? `${location.pathname}?${newQueryParams}`
+        : location.pathname
     );
   }, [searchParams]);
 
