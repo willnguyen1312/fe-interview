@@ -29,8 +29,13 @@ export function TagsInput({ value = [], onChange = () => {} }) {
       return;
     }
 
+    if (isEnter && !finalValue) {
+      setInputValue("");
+      return;
+    }
+
     const isDelete = key === "Backspace";
-    if (isDelete && !finalValue && value.length > 0) {
+    if (isDelete && !inputValue && value.length > 0) {
       const newTags = value.slice(0, -1);
       onChange(newTags);
     }
