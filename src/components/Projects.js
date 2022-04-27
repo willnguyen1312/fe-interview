@@ -6,24 +6,34 @@ import { Project } from "./Project";
 import { projects } from "../data";
 import { useUrlSearchParams } from "../hooks";
 import { filter } from "../utils";
+import { searchKey } from "../constants";
 
 export default function Projects() {
   const { value, set } = useUrlSearchParams();
 
-  const projectSearchKeyword = value.project ?? "";
+  const projectSearchKeyword = value[searchKey] ?? "";
 
   const filteredProjects = React.useMemo(() => {
     if (!projectSearchKeyword || typeof projectSearchKeyword !== "string") {
       return projects;
     }
 
-    return filter(projects, (project) =>
-      project.name.toLowerCase().includes(projectSearchKeyword.toLowerCase())
+    const result = filter(
+      projects,
+      (project) =>
+        project.name
+          .toLowerCase()
+          .includes(projectSearchKeyword.toLowerCase()) ||
+        project.createdByUser
+          .toLowerCase()
+          .includes(projectSearchKeyword.toLowerCase())
     );
+
+    return result;
   }, [projectSearchKeyword]);
 
   function handleOnProjectSearchKeywordChange(event) {
-    set("project", event.target.value);
+    set(searchKey, event.target.value);
   }
 
   return (
