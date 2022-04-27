@@ -19,6 +19,8 @@ describe("Project list app", () => {
       .type(projectSearchKeyword)
       .should("have.value", projectSearchKeyword);
 
+    cy.url().should("contain", `project=${projectSearchKeyword}`);
+
     const filteredProjects = filter(projects, (project) =>
       project.name.toLowerCase().includes(projectSearchKeyword.toLowerCase())
     );
@@ -49,6 +51,14 @@ describe("Project list app", () => {
     // Should not display the rest of projects
     for (const project of hiddenProjects) {
       cy.findByText(project.name).should("not.exist");
+    }
+
+    cy.findByRole("textbox", { name: /project search/i }).clear();
+    cy.url().should("not.contain", `project=${projectSearchKeyword}`);
+
+    // Should display a list of all projects
+    for (const project of projects) {
+      cy.findByText(project.name).should("be.visible");
     }
   });
 });
