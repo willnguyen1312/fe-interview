@@ -6,7 +6,7 @@ describe("formatDate function", () => {
     const actual = formatDate(input.toISOString());
 
     // Since our test input is in UTC, the result can be off by a day
-    // as timezone can be either negative value or positive value ranging from -12 to +12
+    // as timezone can be ranging from -12 to +12
     const possibleResults = ["Apr 14, 2022", "Apr 15, 2022"];
 
     expect(possibleResults.includes(actual)).toBeTruthy();
