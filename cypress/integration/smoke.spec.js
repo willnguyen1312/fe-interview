@@ -1,5 +1,6 @@
 /// <reference types="cypress" />
 
+import { searchKey } from "../../src/constants";
 import { projects } from "../../src/data";
 import { filter } from "../../src/utils";
 
@@ -19,7 +20,7 @@ describe("Project list app", () => {
       .type(projectSearchKeyword)
       .should("have.value", projectSearchKeyword);
 
-    cy.url().should("contain", `search=${projectSearchKeyword}`);
+    cy.url().should("contain", `${searchKey}=${projectSearchKeyword}`);
 
     const filteredProjects = filter(projects, (project) =>
       project.name.toLowerCase().includes(projectSearchKeyword.toLowerCase())
@@ -54,7 +55,7 @@ describe("Project list app", () => {
     }
 
     cy.findByRole("textbox", { name: /project search/i }).clear();
-    cy.url().should("not.contain", `search=${projectSearchKeyword}`);
+    cy.url().should("not.contain", `${searchKey}=${projectSearchKeyword}`);
 
     // Should display a list of all projects
     for (const project of projects) {
@@ -76,7 +77,7 @@ describe("Project list app", () => {
         .type(projectSearchKeyword)
         .should("have.value", projectSearchKeyword);
 
-      cy.url().should("contain", `search=${projectSearchKeyword}`);
+      cy.url().should("contain", `${searchKey}=${projectSearchKeyword}`);
 
       const filteredProjects = filter(
         projects,

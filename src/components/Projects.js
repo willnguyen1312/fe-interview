@@ -6,11 +6,12 @@ import { Project } from "./Project";
 import { projects } from "../data";
 import { useUrlSearchParams } from "../hooks";
 import { filter } from "../utils";
+import { searchKey } from "../constants";
 
 export default function Projects() {
   const { value, set } = useUrlSearchParams();
 
-  const projectSearchKeyword = value.search ?? "";
+  const projectSearchKeyword = value[searchKey] ?? "";
 
   const filteredProjects = React.useMemo(() => {
     if (!projectSearchKeyword || typeof projectSearchKeyword !== "string") {
@@ -32,7 +33,7 @@ export default function Projects() {
   }, [projectSearchKeyword]);
 
   function handleOnProjectSearchKeywordChange(event) {
-    set("search", event.target.value);
+    set(searchKey, event.target.value);
   }
 
   return (
