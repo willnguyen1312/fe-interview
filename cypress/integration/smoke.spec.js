@@ -15,15 +15,16 @@ describe("Project list app", () => {
       cy.findByText(project.name).should("be.visible");
     }
 
-    const projectSearchKeyword = "il";
+    const searchKeyword = "il";
     cy.findByRole("textbox", { name: /project search/i })
-      .type(projectSearchKeyword)
-      .should("have.value", projectSearchKeyword);
+      .type(searchKeyword)
+      .should("have.value", searchKeyword);
 
-    cy.url().should("contain", `${searchKey}=${projectSearchKeyword}`);
+    const queryPart = new URLSearchParams(`${searchKey}=${searchKeyword}`);
+    cy.url().should("contain", queryPart);
 
     const filteredProjects = filter(projects, (project) =>
-      project.name.toLowerCase().includes(projectSearchKeyword.toLowerCase())
+      project.name.toLowerCase().includes(searchKeyword.toLowerCase())
     );
 
     // Should display a list of filtered project
@@ -35,7 +36,7 @@ describe("Project list app", () => {
 
     // Should initialize search box with value from URL
     cy.findByRole("textbox", { name: /project search/i })
-      .should("have.value", projectSearchKeyword)
+      .should("have.value", searchKeyword)
       .and("be.visible");
 
     // Should continue to display a list of filtered project
@@ -46,7 +47,7 @@ describe("Project list app", () => {
     const hiddenProjects = filter(
       projects,
       (project) =>
-        !project.name.toLowerCase().includes(projectSearchKeyword.toLowerCase())
+        !project.name.toLowerCase().includes(searchKeyword.toLowerCase())
     );
 
     // Should not display the rest of projects
@@ -55,7 +56,7 @@ describe("Project list app", () => {
     }
 
     cy.findByRole("textbox", { name: /project search/i }).clear();
-    cy.url().should("not.contain", `${searchKey}=${projectSearchKeyword}`);
+    cy.url().should("not.contain", `${searchKey}=${searchKeyword}`);
 
     // Should display a list of all projects
     for (const project of projects) {
@@ -69,25 +70,24 @@ describe("Project list app", () => {
       cy.findByText(project.name).should("be.visible");
     }
 
-    const projectSearchKeywords = ["Rob", "Sam"];
+    const searchKeywords = ["Rob Tinn", "Sam"];
 
-    for (const projectSearchKeyword of projectSearchKeywords) {
+    for (const searchKeyword of searchKeywords) {
       cy.findByRole("textbox", { name: /project search/i })
         .clear()
-        .type(projectSearchKeyword)
-        .should("have.value", projectSearchKeyword);
+        .type(searchKeyword)
+        .should("have.value", searchKeyword);
 
-      cy.url().should("contain", `${searchKey}=${projectSearchKeyword}`);
+      const queryPart = new URLSearchParams(`${searchKey}=${searchKeyword}`);
+      cy.url().should("contain", queryPart.toString());
 
       const filteredProjects = filter(
         projects,
         (project) =>
-          project.name
-            .toLowerCase()
-            .includes(projectSearchKeyword.toLowerCase()) ||
+          project.name.toLowerCase().includes(searchKeyword.toLowerCase()) ||
           project.createdByUser
             .toLowerCase()
-            .includes(projectSearchKeyword.toLowerCase())
+            .includes(searchKeyword.toLowerCase())
       );
 
       // Should display a list of filtered project
