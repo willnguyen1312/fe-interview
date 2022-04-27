@@ -67,9 +67,23 @@ describe("TagsInput component", () => {
     expect(screen.getByText(initialTags[0])).toBeInTheDocument();
     expect(screen.queryByText(initialTags[1])).not.toBeInTheDocument();
 
+    await user.type(input, " ");
+    await user.keyboard("{Backspace}");
+    expect(screen.getByText(initialTags[0])).toBeInTheDocument();
+    expect(screen.queryByText(initialTags[1])).not.toBeInTheDocument();
+
     // // Hit Delete agin to clear last tag
     await user.keyboard("{Backspace}");
     expect(screen.queryByText(initialTags[0])).not.toBeInTheDocument();
+
+    await user.keyboard("   ");
+    await user.keyboard("{Enter}");
+    expect(input.value).toBe("");
+
+    const deleteButtons = screen.queryAllByRole("button", {
+      name: /delete tag/i,
+    });
+    expect(deleteButtons).toHaveLength(0);
   });
 
   it("should handle remove tag by x button properly", async () => {
