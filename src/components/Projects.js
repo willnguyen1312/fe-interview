@@ -10,20 +10,29 @@ import { filter } from "../utils";
 export default function Projects() {
   const { value, set } = useUrlSearchParams();
 
-  const projectSearchKeyword = value.project ?? "";
+  const projectSearchKeyword = value.search ?? "";
 
   const filteredProjects = React.useMemo(() => {
     if (!projectSearchKeyword || typeof projectSearchKeyword !== "string") {
       return projects;
     }
 
-    return filter(projects, (project) =>
-      project.name.toLowerCase().includes(projectSearchKeyword.toLowerCase())
+    const result = filter(
+      projects,
+      (project) =>
+        project.name
+          .toLowerCase()
+          .includes(projectSearchKeyword.toLowerCase()) ||
+        project.createdByUser
+          .toLowerCase()
+          .includes(projectSearchKeyword.toLowerCase())
     );
+
+    return result;
   }, [projectSearchKeyword]);
 
   function handleOnProjectSearchKeywordChange(event) {
-    set("project", event.target.value);
+    set("search", event.target.value);
   }
 
   return (

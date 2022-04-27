@@ -19,7 +19,7 @@ describe("Project list app", () => {
       .type(projectSearchKeyword)
       .should("have.value", projectSearchKeyword);
 
-    cy.url().should("contain", `project=${projectSearchKeyword}`);
+    cy.url().should("contain", `search=${projectSearchKeyword}`);
 
     const filteredProjects = filter(projects, (project) =>
       project.name.toLowerCase().includes(projectSearchKeyword.toLowerCase())
@@ -54,11 +54,45 @@ describe("Project list app", () => {
     }
 
     cy.findByRole("textbox", { name: /project search/i }).clear();
-    cy.url().should("not.contain", `project=${projectSearchKeyword}`);
+    cy.url().should("not.contain", `search=${projectSearchKeyword}`);
 
     // Should display a list of all projects
     for (const project of projects) {
       cy.findByText(project.name).should("be.visible");
+    }
+  });
+
+  it("should handle searching for both name and project author", () => {
+    // Should display a list of all projects on initial load
+    for (const project of projects) {
+      cy.findByText(project.name).should("be.visible");
+    }
+
+    const projectSearchKeywords = ["Rob", "Sam"];
+
+    for (const projectSearchKeyword of projectSearchKeywords) {
+      cy.findByRole("textbox", { name: /project search/i })
+        .clear()
+        .type(projectSearchKeyword)
+        .should("have.value", projectSearchKeyword);
+
+      cy.url().should("contain", `search=${projectSearchKeyword}`);
+
+      const filteredProjects = filter(
+        projects,
+        (project) =>
+          project.name
+            .toLowerCase()
+            .includes(projectSearchKeyword.toLowerCase()) ||
+          project.createdByUser
+            .toLowerCase()
+            .includes(projectSearchKeyword.toLowerCase())
+      );
+
+      // Should display a list of filtered project
+      for (const project of filteredProjects) {
+        cy.findByText(project.name).should("exist");
+      }
     }
   });
 });
