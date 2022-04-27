@@ -11,13 +11,13 @@ describe("Project list app", () => {
   it("should work for typical user work flow", () => {
     // Should display a list of all projects on initial load
     for (const project of projects) {
-      cy.findByText(project.name);
+      cy.findByText(project.name).should("be.visible");
     }
 
     const projectSearchKeyword = "il";
-    cy.findByRole("textbox", { name: /project search/i }).type(
-      projectSearchKeyword
-    );
+    cy.findByRole("textbox", { name: /project search/i })
+      .type(projectSearchKeyword)
+      .should("have.value", projectSearchKeyword);
 
     const filteredProjects = filter(projects, (project) =>
       project.name.toLowerCase().includes(projectSearchKeyword.toLowerCase())
@@ -25,20 +25,19 @@ describe("Project list app", () => {
 
     // Should display a list of filtered project
     for (const project of filteredProjects) {
-      cy.findByText(project.name);
+      cy.findByText(project.name).should("be.visible");
     }
 
     cy.reload();
 
     // Should initialize search box with value from URL
-    cy.findByRole("textbox", { name: /project search/i }).should(
-      "have.value",
-      projectSearchKeyword
-    );
+    cy.findByRole("textbox", { name: /project search/i })
+      .should("have.value", projectSearchKeyword)
+      .and("be.visible");
 
     // Should continue to display a list of filtered project
     for (const project of filteredProjects) {
-      cy.findByText(project.name);
+      cy.findByText(project.name).should("be.visible");
     }
 
     const hiddenProjects = filter(
