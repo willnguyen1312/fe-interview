@@ -2,7 +2,7 @@ import { formatDate } from "./date";
 
 describe("formatDate function", () => {
   it("should convert date string to the right format", () => {
-    const input = new Date(Date.UTC(2022, 3, 15, 0, 0, 0, 0));
+    const input = new Date(Date.UTC(2022, 3, 15));
     const actual = formatDate(input.toISOString());
 
     // Since our test input is in UTC, the result can be off by a day
